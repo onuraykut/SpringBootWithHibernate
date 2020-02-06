@@ -1,4 +1,4 @@
-package com.kryptow.springbootrest.model;
+package com.kryptow.springbootrest.model.posts;
 
 import java.util.List;
 

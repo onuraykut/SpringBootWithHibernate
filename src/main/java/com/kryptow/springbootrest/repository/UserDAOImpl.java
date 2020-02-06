@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kryptow.springbootrest.model.User;
+import com.kryptow.springbootrest.model.posts.PrivatePosts;
 
 @Repository
 public class UserDAOImpl implements UserDAO {
@@ -31,12 +32,14 @@ public class UserDAOImpl implements UserDAO {
 		Query<User> theQuery = 
 				currentSession.createQuery("from User",User.class);
 		// execute query
-		List<User> users = theQuery.getResultList();
-		
+		List<User> users = (List<User>) theQuery.getResultList();
+		for(User p : users) {
+			System.out.println(p);
+		}
 		//return results
 		return users;
 	}
-
+	@Transactional
 	@Override
 	public User findById(int theId) {
 		Session currentSession = entityManger.unwrap(Session.class);
@@ -44,13 +47,13 @@ public class UserDAOImpl implements UserDAO {
 		User theUser = currentSession.get(User.class, theId);
 		return theUser;
 	}
-
+	@Transactional
 	@Override
 	public void save(User theUser) {
 		Session currentSession = entityManger.unwrap(Session.class);
-		currentSession.saveOrUpdate(theUser);
+		currentSession.save(theUser);
 	}
-
+	@Transactional
 	@Override
 	public void deleteById(int theId) {
 		Session currentSession = entityManger.unwrap(Session.class);
