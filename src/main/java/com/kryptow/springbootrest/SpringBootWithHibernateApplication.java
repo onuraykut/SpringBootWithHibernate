@@ -2,8 +2,14 @@ package com.kryptow.springbootrest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+import com.kryptow.springbootrest.property.FileStorageProperties;
 
 @SpringBootApplication
+@EnableConfigurationProperties({
+    FileStorageProperties.class
+})
 public class SpringBootWithHibernateApplication {
 
 	public static void main(String[] args) {
