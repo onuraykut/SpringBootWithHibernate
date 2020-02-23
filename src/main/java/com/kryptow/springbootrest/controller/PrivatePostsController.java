@@ -2,7 +2,9 @@ package com.kryptow.springbootrest.controller;
 
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.jackson.JsonObjectDeserializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,20 +29,23 @@ import com.kryptow.springbootrest.service.FileStorageService;
 @RequestMapping("/post")
 public class PrivatePostsController {
 private PostDAO postDAO;
-	
+private UserDAO userDAO;
 	@Autowired
-	public PrivatePostsController(PostDAO postDAO) {
+	public PrivatePostsController(PostDAO postDAO,UserDAO theUserDAO) {
 		this.postDAO = postDAO;
+		this.userDAO = theUserDAO;
 	}
 	 @Autowired
 	    private FileStorageService fileStorageService;
 	    
 	    @PostMapping("/uploadFile")
-	    public void uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("ext") String ext) {
+	    public void uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("ext") String ext,@RequestParam String fromID,
+	    		@RequestParam String toID,@RequestParam String message,@RequestParam String comment,@RequestParam int rating) {
 	        String fileName = fileStorageService.storeFile(file,ext);
-	        
+	        PrivatePosts privates = new PrivatePosts(fromID, toID, message, fileName, comment, rating);
 	        System.out.println(fileName);
-
+	        System.out.println(privates);
+	    	this.postDAO.save(privates);	
 	    }
 	@GetMapping("/all")
 	public List<PrivatePosts> getAll()  {
@@ -51,6 +56,7 @@ private PostDAO postDAO;
 	public void save(@RequestBody PrivatePosts privatePosts) {
 		this.postDAO.save(privatePosts);	
 	}
+	
 //	@PutMapping("/posts")
 //	public ResponseEntity<PrivatePosts> save(@RequestBody PrivatePosts privatePosts) {
 //		this.postDAO.save(privatePosts);
@@ -67,9 +73,15 @@ private PostDAO postDAO;
         List<PrivatePosts> posts = this.postDAO.findByFromID(fromID);
         return posts;
     }
-	@GetMapping("/toID/{toID}")
-    public List<PrivatePosts> findByToID(@PathVariable("toID") String toID){
+	@PostMapping("/toID")
+    public List<PrivatePosts> findByToID(@RequestParam("toID") String toID){
+		 User user = userDAO.findByUid(toID);
         List<PrivatePosts> posts = this.postDAO.findByToID(toID);
+        for(int i=0;i<posts.size();i++) {
+        	
+        }
+       
+       
         return posts;
     }
 	

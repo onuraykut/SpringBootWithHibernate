@@ -30,10 +30,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity 
-@Data  
-@Builder
-@NoArgsConstructor 
-@AllArgsConstructor
 @Table(name = "Posts")
 public class PrivatePosts implements Serializable{
 	@Id
@@ -52,4 +48,60 @@ public class PrivatePosts implements Serializable{
 	private String photoName;
 	private String comment;
 	private int rating;
+	
+	
+	
+	public PrivatePosts(String fromID, String toID, String message, String photoName, String comment, int rating) {
+		super();
+		this.fromID = fromID;
+		this.toID = toID;
+		this.message = message;
+		this.photoName = photoName;
+		this.comment = comment;
+		this.rating = rating;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getFromID() {
+		return fromID;
+	}
+	public void setFromID(String fromID) {
+		this.fromID = fromID;
+	}
+	public String getToID() {
+		return toID;
+	}
+	public void setToID(String toID) {
+		this.toID = toID;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	public String getPhotoName() {
+		return photoName;
+	}
+	public void setPhotoName(String photoName) {
+		this.photoName = photoName;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public int getRating() {
+		return rating;
+	}
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+	
+	
 	}

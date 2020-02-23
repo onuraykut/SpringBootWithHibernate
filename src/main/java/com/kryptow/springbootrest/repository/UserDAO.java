@@ -12,4 +12,6 @@ public interface UserDAO {
 	public void save(User theUser);
 	
 	public void deleteById(int theId);
+
+	public User findByUid(String toID);
 }
