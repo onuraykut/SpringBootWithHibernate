@@ -14,7 +14,7 @@ import com.kryptow.springbootrest.model.User;
 import com.kryptow.springbootrest.repository.UserDAO;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping
 public class UserController {
 	
 	private UserDAO userDAO;
