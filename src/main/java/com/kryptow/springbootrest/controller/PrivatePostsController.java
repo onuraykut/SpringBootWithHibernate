@@ -39,13 +39,14 @@ private UserDAO userDAO;
 	    private FileStorageService fileStorageService;
 	    
 	    @PostMapping("/uploadFile")
-	    public void uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("ext") String ext,@RequestParam String fromID,
+	    public String uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("ext") String ext,@RequestParam String fromID,
 	    		@RequestParam String toID,@RequestParam String message,@RequestParam String comment,@RequestParam int rating) {
 	        String fileName = fileStorageService.storeFile(file,ext);
 	        PrivatePosts privates = new PrivatePosts(fromID, toID, message, fileName, comment, rating);
 	        System.out.println(fileName);
 	        System.out.println(privates);
 	    	this.postDAO.save(privates);	
+	    	return fileName;
 	    }
 	@GetMapping("/all")
 	public List<PrivatePosts> getAll()  {
