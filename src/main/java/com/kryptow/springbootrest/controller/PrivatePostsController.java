@@ -1,5 +1,6 @@
 package com.kryptow.springbootrest.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kryptow.springbootrest.model.User;
+import com.kryptow.springbootrest.model.posts.Degerlendirmeler;
 import com.kryptow.springbootrest.model.posts.PrivatePosts;
 import com.kryptow.springbootrest.repository.PostDAO;
 import com.kryptow.springbootrest.repository.UserDAO;
@@ -75,15 +77,18 @@ private UserDAO userDAO;
         return posts;
     }
 	@PostMapping("/toID")
-    public List<PrivatePosts> findByToID(@RequestParam("toID") String toID){
-		 User user = userDAO.findByUid(toID);
+    public List<Degerlendirmeler> findByToID(@RequestParam("toID") String toID){
         List<PrivatePosts> posts = this.postDAO.findByToID(toID);
+        
+        List<Degerlendirmeler> degerlendirmeler = new ArrayList<Degerlendirmeler>();
         for(int i=0;i<posts.size();i++) {
-        	
+        	int postid = posts.get(i).getId();
+        	String username = this.userDAO.findUsernameByPostId(postid);
+        	degerlendirmeler.add(new Degerlendirmeler(postid,username,posts.get(i).getToIdPhoto(),posts.get(i).getFromIdPhoto(),posts.get(i).getPhotoNameMin()));
         }
        
        
-        return posts;
+        return degerlendirmeler;
     }
 	
 	public ResponseEntity<PrivatePosts> returnStatus(PrivatePosts privatePosts) {

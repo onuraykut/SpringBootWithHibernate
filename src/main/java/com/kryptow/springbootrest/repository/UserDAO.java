@@ -14,4 +14,6 @@ public interface UserDAO {
 	public void deleteById(int theId);
 
 	public User findByUid(String toID);
+	
+	public String findUsernameByPostId(int id);
 }

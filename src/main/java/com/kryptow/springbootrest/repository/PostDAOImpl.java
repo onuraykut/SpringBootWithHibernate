@@ -92,6 +92,7 @@ private EntityManager entityManger;
 		List<PrivatePosts> privatePosts = (List<PrivatePosts>) theQuery.getResultList(); 
 		return privatePosts;
 	}
+	@Transactional
 	@Override
 	public List<PrivatePosts> findByToID(String toID) {
 		Session currentSession = entityManger.unwrap(Session.class);
@@ -99,7 +100,7 @@ private EntityManager entityManger;
 				currentSession.createQuery("from PrivatePosts where toID=:theToid",PrivatePosts.class);
 		theQuery.setParameter("theToid", toID);
 		// execute query
-		List<PrivatePosts> privatePosts = (List<PrivatePosts>) theQuery.getResultList(); 
+		List<PrivatePosts> privatePosts =  theQuery.getResultList(); 
 		return privatePosts;
 	}
 

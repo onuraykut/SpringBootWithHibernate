@@ -52,7 +52,7 @@ public class UserDAOImpl implements UserDAO {
 	public User findByUid(String theId) {
 		Session currentSession = entityManger.unwrap(Session.class);
 		Query<User> theQuery = 
-				currentSession.createQuery("select from Users where uid=:theId",User.class);
+				currentSession.createQuery("select from User where uid=:theId",User.class);
 		theQuery.setParameter("theId", theId);
 		User user = theQuery.uniqueResult();
 		return user; 
@@ -68,9 +68,19 @@ public class UserDAOImpl implements UserDAO {
 	public void deleteById(int theId) {
 		Session currentSession = entityManger.unwrap(Session.class);
 		Query<User> theQuery = 
-				currentSession.createQuery("delete from Users where id=:userId",User.class);
+				currentSession.createQuery("delete from User where id=:userId",User.class);
 		theQuery.setParameter("userId", theId);
 		theQuery.executeUpdate(); 
 	}
-
+	
+	@Transactional
+	@Override
+	public String findUsernameByPostId(int theID) {
+		Session currentSession = entityManger.unwrap(Session.class);
+		Query<?> theQuery = 
+				currentSession.createNativeQuery("select username from users where uid in (select toid from posts where id=?)");
+		theQuery.setParameter(1, theID);
+		String username = (String) theQuery.getSingleResult();
+		return username;
+	}
 }

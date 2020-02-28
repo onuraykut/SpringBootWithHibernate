@@ -49,8 +49,9 @@ public class PrivatePosts implements Serializable{
 	private String comment;
 	private int rating;
 	
-	
-	
+	public PrivatePosts() {
+		
+	}
 	public PrivatePosts(String fromID, String toID, String message, String photoName, String comment, int rating) {
 		super();
 		this.fromID = fromID;
@@ -102,6 +103,14 @@ public class PrivatePosts implements Serializable{
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
-	
+	public String getToIdPhoto() {
+		return toID+".jpg";
+	}
+	public String getFromIdPhoto() {
+		return fromID+".jpg";
+	}
+	public String getPhotoNameMin() {
+		return photoName+"_min.jpg";
+	}
 	
 	}
