@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kryptow.springbootrest.model.User;
+import com.kryptow.springbootrest.model.posts.DegerlendirmeDetaylari;
 import com.kryptow.springbootrest.model.posts.Degerlendirmeler;
 import com.kryptow.springbootrest.model.posts.PrivatePosts;
 import com.kryptow.springbootrest.repository.PostDAO;
@@ -66,16 +67,6 @@ private UserDAO userDAO;
 //		return new ResponseEntity<PrivatePosts> (privatePosts,HttpStatus.OK);
 //		
 //	}
-	
-	@GetMapping("/{postID}")
-	public PrivatePosts findById(@PathVariable("postID") int postID) {
-		return postDAO.findById(postID);
-	}
-	@GetMapping("/fromID/{fromID}")
-    public List<PrivatePosts> findByFromID(@PathVariable("fromID") String fromID){
-        List<PrivatePosts> posts = this.postDAO.findByFromID(fromID);
-        return posts;
-    }
 	@PostMapping("/toID")
     public List<Degerlendirmeler> findByToID(@RequestParam("toID") String toID){
         List<PrivatePosts> posts = this.postDAO.findByToID(toID);
@@ -90,6 +81,26 @@ private UserDAO userDAO;
        
         return degerlendirmeler;
     }
+	@PostMapping("/fromID")
+    public List<Degerlendirmeler> findByFromID(@RequestParam("fromID") String fromID){
+        List<PrivatePosts> posts = this.postDAO.findByFromID(fromID);
+        
+        List<Degerlendirmeler> degerlendirmeler = new ArrayList<Degerlendirmeler>();
+        for(int i=0;i<posts.size();i++) {
+        	int postid = posts.get(i).getId();
+        	String username = this.userDAO.findUsernameByPostId(postid);
+        	degerlendirmeler.add(new Degerlendirmeler(postid,username,posts.get(i).getToIdPhoto(),posts.get(i).getFromIdPhoto(),posts.get(i).getPhotoNameMin()));
+        }
+       
+       
+        return degerlendirmeler;
+    }
+	@PostMapping("/postDetails")
+	public DegerlendirmeDetaylari getDegerlendirmeDetaylari(@RequestParam int postID) {
+		return this.postDAO.getDegerlendirmeDetaylari(postID);
+	}
+	
+	
 	
 	public ResponseEntity<PrivatePosts> returnStatus(PrivatePosts privatePosts) {
 		return new ResponseEntity<PrivatePosts> (privatePosts,HttpStatus.OK);

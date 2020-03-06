@@ -1,16 +1,19 @@
 package com.kryptow.springbootrest.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kryptow.springbootrest.model.User;
+import com.kryptow.springbootrest.model.posts.DegerlendirmeDetaylari;
 import com.kryptow.springbootrest.model.posts.PrivatePosts;
 
 @Repository
@@ -104,4 +107,32 @@ private EntityManager entityManger;
 		return privatePosts;
 	}
 
+	@Transactional
+	@Nullable
+	@Override
+	public DegerlendirmeDetaylari getDegerlendirmeDetaylari(int postID) {
+		Session currentSession = entityManger.unwrap(Session.class);
+		Query<?> theQuery = 
+				currentSession.createNativeQuery("SELECT  ( SELECT username FROM   users WHERE uid IN (SELECT toid from posts where id=?) ) AS toName,(  SELECT username FROM   users WHERE uid IN (SELECT fromid from posts where id=?) ) AS fromName , photo_name,comment,toid,fromid FROM posts where id=?");
+		theQuery.setParameter(1, postID);
+		theQuery.setParameter(2, postID);
+		theQuery.setParameter(3, postID);
+		Object[] list = (Object[]) theQuery.getSingleResult();
+	//	List = Optional.ofNullable();
+		if(list!=null)
+		return new DegerlendirmeDetaylari(list[0].toString(),list[1].toString(),list[2].toString(),list[4].toString(),list[3].toString());
+		else
+		return new DegerlendirmeDetaylari();
+	}
+/* 
+ * SELECT  (
+    SELECT username
+    FROM   users WHERE uid IN (SELECT toid from posts where id=1)
+    ) AS toName,
+    (
+   SELECT username
+    FROM   users WHERE uid IN (SELECT fromid from posts where id=1)
+    ) AS fromName , toid,fromid,photo_name,comment FROM posts where id=1
+ * 
+ * */
 }
