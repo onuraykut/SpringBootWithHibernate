@@ -43,7 +43,9 @@ public class User implements Serializable{
 	//@OneToMany(mappedBy="fromID")
 	private String uid;
 	private String username;
-	private String mailAdress;
+	private String name;
+	private String mailAddress;
+	//// profil fotoğrafı uid bağlantılı şekilde olacak. uid.jpg / uid_min.jpg
 	@CreationTimestamp
 	@Temporal(TemporalType.TIMESTAMP)
 	//@JsonIgnore
@@ -56,7 +58,10 @@ public class User implements Serializable{
 	//private List<PrivatePosts> privatePosts;
 	//private Posts posts;
 	
-	
+	public User(String uid,String mailAddress) {
+		this.uid = uid;
+		this.mailAddress = mailAddress;
+	}
 	
 }
 

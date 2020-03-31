@@ -49,11 +49,11 @@ public class UserDAOImpl implements UserDAO {
 	}
 	@Transactional
 	@Override
-	public User findByUid(String theId) {
+	public User findByUid(String uid) {
 		Session currentSession = entityManger.unwrap(Session.class);
 		Query<User> theQuery = 
-				currentSession.createQuery("select from User where uid=:theId",User.class);
-		theQuery.setParameter("theId", theId);
+				currentSession.createQuery("from User where uid=:theId",User.class);
+		theQuery.setParameter("theId", uid);
 		User user = theQuery.uniqueResult();
 		return user; 
 	}

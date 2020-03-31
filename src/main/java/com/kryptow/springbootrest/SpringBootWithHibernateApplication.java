@@ -5,10 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import com.kryptow.springbootrest.property.FileStorageProperties;
+import com.kryptow.springbootrest.property.FileStoragePropertiesProfile;
 
 @SpringBootApplication
 @EnableConfigurationProperties({
-    FileStorageProperties.class
+    FileStorageProperties.class,
+    FileStoragePropertiesProfile.class
 })
 public class SpringBootWithHibernateApplication {
 

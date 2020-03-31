@@ -13,7 +13,7 @@ public interface UserDAO {
 	
 	public void deleteById(int theId);
 
-	public User findByUid(String toID);
+	public User findByUid(String uid);
 	
 	public String findUsernameByPostId(int id);
 }

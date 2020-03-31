@@ -38,51 +38,24 @@ import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
 
 @Service
-public class FileStorageService {
+public class FileStorageServiceProfile {
 
-    private final Path fileStorageLocation;
     private final Path fileStorageLocationProfile;
 
     @Autowired
-    public FileStorageService(FileStorageProperties fileStorageProperties,FileStoragePropertiesProfile fileStoragePropertiesProfile) {
+    public FileStorageServiceProfile(FileStoragePropertiesProfile fileStoragePropertiesProfile) {
         this.fileStorageLocationProfile = Paths.get(fileStoragePropertiesProfile.getUploadDir())
                 .toAbsolutePath().normalize();
-		this.fileStorageLocation = Paths.get(fileStorageProperties.getUploadDir())
-                .toAbsolutePath().normalize();
+        System.out.println("test1");
+		System.out.println(fileStorageLocationProfile.toString());
 
         try {
-            Files.createDirectories(this.fileStorageLocation);
             Files.createDirectories(this.fileStorageLocationProfile);
         } catch (Exception ex) {
-           // throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
+           System.out.println(ex.toString());
         }
     }
 
-    public String storeFile(MultipartFile file,String ext) {
-        // Normalize file name
-    	  String fileName = UUID.randomUUID().toString();
-    	  String fileNameWithExt = fileName  + "."+"jpg";
-
-        try {
-            // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.fileStorageLocation.resolve(fileNameWithExt);
-            Path targetLocation2 = this.fileStorageLocation.resolve(fileName+"_min.jpg");
-          //  Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-         //   ImageIO.write(compressImage(file,fileName), "jpg", targetLocation.toFile());
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ImageIO.write(compressImage(file,fileName), "jpg", out);
-            InputStream is = new ByteArrayInputStream(out.toByteArray());
-            Files.copy(is, targetLocation, StandardCopyOption.REPLACE_EXISTING);
-            Thumbnails.of(file.getInputStream())
-            .size(100, 100)
-            .toFile(targetLocation2.toFile());
-
-
-        } catch (IOException ex) {
-         //   throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-        }
-		return fileName;
-    }
     
     public Boolean storeFileProfile(MultipartFile file,String ext,String uid) throws Exception {
     	System.out.println(uid);
@@ -90,6 +63,7 @@ public class FileStorageService {
             // Copy file to the target location (Replacing existing file with the same name)
             Path targetLocation = this.fileStorageLocationProfile.resolve(uid+".jpg");
             Path targetLocation2 = this.fileStorageLocationProfile.resolve(uid+"_min.jpg");
+            System.out.println(targetLocation.toString());
           //  Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
          //   ImageIO.write(compressImage(file,fileName), "jpg", targetLocation.toFile());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -101,7 +75,7 @@ public class FileStorageService {
             .toFile(targetLocation2.toFile());
 
         } catch (IOException ex) {
-            throw new Exception("Could not store file " + uid + ". Please try again!", ex);
+        	  System.out.println(ex.toString());
         }
         return true;
     }

@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+/.attach_pid1138
+/.attach_pid1334
+/.attach_pid9063
