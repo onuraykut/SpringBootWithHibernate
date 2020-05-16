@@ -33,6 +33,14 @@ public class UserController {
 	public List<User> findAll() {
 		return userDAO.findAll();
 	}
+	@GetMapping("/getEkip")
+	public List<User> getEkip() {
+		return userDAO.getEkip();
+	}
+	@GetMapping("/getUsers")
+	public List<User> getUsers() {
+		return userDAO.getUsers();
+	}
 	@PostMapping("/get")
 	public User findById(@PathVariable int userId) {
 		return userDAO.findById(userId);

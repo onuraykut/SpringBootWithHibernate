@@ -51,8 +51,9 @@ public class User implements Serializable{
 	//@JsonIgnore
 	private Date createDate;
 	private int coin;
-	private int ratingSum;
-	private int ratingCount;
+	private int ratingSum=5;
+	private int ratingCount=1;
+	private boolean isEkip=false;
 //	@Transient
 	//@OneToMany(mappedBy = "fromID",cascade = CascadeType.ALL)
 	//private List<PrivatePosts> privatePosts;

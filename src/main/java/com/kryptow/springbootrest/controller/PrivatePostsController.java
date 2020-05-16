@@ -43,9 +43,9 @@ private UserDAO userDAO;
 	    
 	    @PostMapping("/uploadFile")
 	    public String uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("ext") String ext,@RequestParam String fromID,
-	    		@RequestParam String toID,@RequestParam String message,@RequestParam String comment,@RequestParam int rating) {
+	    		@RequestParam String toID,@RequestParam String message,@RequestParam int rating) {
 	        String fileName = fileStorageService.storeFile(file,ext);
-	        PrivatePosts privates = new PrivatePosts(fromID, toID, message, fileName, comment, rating);
+	        PrivatePosts privates = new PrivatePosts(fromID, toID, message, fileName, "", rating);
 	        System.out.println(fileName);
 	        System.out.println(privates);
 	    	this.postDAO.save(privates);	
@@ -91,16 +91,18 @@ private UserDAO userDAO;
         	String username = this.userDAO.findUsernameByPostId(postid);
         	degerlendirmeler.add(new Degerlendirmeler(postid,username,posts.get(i).getToIdPhoto(),posts.get(i).getFromIdPhoto(),posts.get(i).getPhotoNameMin()));
         }
-       
-       
         return degerlendirmeler;
     }
 	@PostMapping("/postDetails")
 	public DegerlendirmeDetaylari getDegerlendirmeDetaylari(@RequestParam int postID) {
 		return this.postDAO.getDegerlendirmeDetaylari(postID);
 	}
-	
-	
+	@PostMapping("/comment")
+	public void saveComment(@RequestParam int postID,@RequestParam String comment) {
+		PrivatePosts privatePosts = this.postDAO.findById(postID);
+		privatePosts.setComment(comment);
+		this.postDAO.save(privatePosts);
+		}
 	
 	public ResponseEntity<PrivatePosts> returnStatus(PrivatePosts privatePosts) {
 		return new ResponseEntity<PrivatePosts> (privatePosts,HttpStatus.OK);

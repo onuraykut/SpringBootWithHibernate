@@ -33,9 +33,37 @@ public class UserDAOImpl implements UserDAO {
 				currentSession.createQuery("from User",User.class);
 		// execute query
 		List<User> users = (List<User>) theQuery.getResultList();
-		for(User p : users) {
-			System.out.println(p);
-		}
+	
+		//return results
+		return users;
+	}
+	@Override
+	public List<User> getEkip() {
+		// get the current hibernate session
+		Session currentSession = entityManger.unwrap(Session.class);
+		
+		//create a query
+		Query<User> theQuery = 
+				currentSession.createQuery("from User where isEkip=:ekipBool",User.class);
+		theQuery.setParameter("ekipBool", true);
+		// execute query
+		List<User> users = (List<User>) theQuery.getResultList();
+
+		//return results
+		return users;
+	}
+	@Override
+	public List<User> getUsers() {
+		// get the current hibernate session
+		Session currentSession = entityManger.unwrap(Session.class);
+		
+		//create a query
+		Query<User> theQuery = 
+				currentSession.createQuery("from User where isEkip=:ekipBool",User.class);
+		theQuery.setParameter("ekipBool", false);
+		// execute query
+		List<User> users = (List<User>) theQuery.getResultList();
+
 		//return results
 		return users;
 	}
