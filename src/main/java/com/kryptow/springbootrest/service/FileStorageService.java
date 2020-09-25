@@ -58,7 +58,7 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file,String ext) {
+    public String storeFile(MultipartFile file,String z) {
         // Normalize file name
     	  String fileName = UUID.randomUUID().toString();
     	  String fileNameWithExt = fileName  + "."+"jpg";
